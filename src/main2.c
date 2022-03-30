@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #include <malloc.h>
 
 #include "parallel_matrix.h"
@@ -7,22 +8,37 @@
 void output(int *, int, int);
 int *insert_arr(int row, int col, int max_n);
 int main() {
-    int *arr;
-    int *result;
+    int *arr = NULL;
+    int *result = NULL;
+    int *(*myfunc)(int *, int, int) = NULL;
+    void *library = NULL;
 
-    arr = insert_arr(ROWS, COLS, 10);
-    if (!arr) {
-        printf("EROOR\n");
+    library = dlopen("libhardlib.so", RTLD_LAZY);
+    if (!library) {
+        printf("ERROR 1\n");
         return 1;
     }
-    result = solve_hard(arr, ROWS, COLS);
+
+    *(void **) (&myfunc) = dlsym(library, "solve_hard");
+    if (!myfunc) {
+        printf("ERROR\n");
+        return 1;
+    }
+    arr = insert_arr(ROWS, COLS, 10);
+
+    if (!arr) {
+        printf("ERROR\n");
+        return 1;
+    }
+    result = myfunc(arr, ROWS, COLS);
     if (!result) {
         free(arr);
-        printf("EROOR\n");
+        printf("ERROR\n");
         return 1;
     }
     free(arr);
     munmap(result, COLS * ROWS);
+    dlclose(library);
 
     return 0;
 }

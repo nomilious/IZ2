@@ -7,8 +7,8 @@
 void output(int *, int, int);
 int *insert_arr(int row, int col, int max_n);
 int main() {
-    int *arr;
-    int *result;
+    int *arr = NULL;
+    int *result = NULL;
 
     arr = insert_arr(ROWS, COLS, 10);
     if (!arr) {
