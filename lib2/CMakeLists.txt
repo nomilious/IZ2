@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(hardlib)
 
 
-set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-Wall -Werror -Wpedantic")
+set(CMAKE_C_FLAGS "-g -O0 -Wall -W -Werror -Wpedantic -fprofile-arcs -fPIC -ftest-coverage")
 
 
 file(GLOB SOURCES *.c)

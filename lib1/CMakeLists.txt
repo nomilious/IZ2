@@ -4,6 +4,7 @@ project(mylim)
 file(GLOB SOURCES *.c)
 file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
+set(CMAKE_C_FLAGS "-g -O0 -Wall -W -Werror -Wpedantic -fprofile-arcs -fPIC -ftest-coverage")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 

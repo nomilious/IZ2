@@ -21,7 +21,10 @@ check:
 	bash linters/run.sh
 
 format:
-	clang-format -i lib/*.c main.c
+	clang-format -i lib1/*.c lib2/*.c mains/*.c tests/*.cpp
+
+test_coverage:
+	cd build && lcov -t "tests/test" -o coverage.info -c -d lib2/ -d lib1/ && genhtml -o report coverage.info
 
 clean:
 	rm -r build

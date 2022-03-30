@@ -1,3 +1,4 @@
+#ifndef HEADER_PARALLEL
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,4 +8,8 @@
 #include <time.h>
 #include <unistd.h>
 
-int *solve_hard(int *, int, int);
+#define HEADER_PARALLEL
+
+int *solve_hard(const int *, const int, const int);
+int *insert_arr(const int, const int, const int);
+#endif
