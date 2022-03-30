@@ -1,11 +1,27 @@
-build:
-	cmake -S . -B build && cmake --build build
+simple: pre_build builder
 
-test2:
-	./build/a.out > a.log
+complicated: pre_build2 builder
 
-test:
+pre_build:
+	cmake -Dsimple=ON -S . -B build
+
+pre_build2:
+	cmake -Dsimple=OFF -S . -B build
+
+builder:
+	cmake --build build
+
+run:
 	./build/a.out
 
-rm:
+test_time:
+	multitime -q -n 10 ./build/a.out
+
+check:
+	bash linters/run.sh
+
+format:
+	clang-format -i lib/*.c main.c
+
+clean:
 	rm -r build
