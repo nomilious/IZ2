@@ -11,5 +11,4 @@
 #define HEADER_PARALLEL
 
 int *solve_hard(const int *, const int, const int);
-int *insert_arr(const int, const int, const int);
 #endif

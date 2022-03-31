@@ -2,17 +2,30 @@ cmake_minimum_required(VERSION 3.0.0)
 project(a.out)
 
 set(CMAKE_C_STANDARD 99)
+
 add_subdirectory(lib1)
-if (simple)
-    add_executable(${PROJECT_NAME} mains/main1.c)
+add_subdirectory(lib2)
+# _time for time testing
+# _on for fsanitizer
+# _off for simple or valgring run
+# Simple - simple, nonparallel run
+# Complicated for parallel run
+if (V_HOW STREQUAL "Simple_off" OR V_HOW STREQUAL  "Simple_on" OR V_HOW STREQUAL  "Simple_time")
+    add_executable(${PROJECT_NAME} mains/main1.c)  
+    target_include_directories(${PROJECT_NAME} PUBLIC ${MYLIB_LIB_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${MYLIB_LIB_LIBRARIES})
 else()
     add_executable(${PROJECT_NAME} mains/main2.c)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${HARDLIB_LIB_INCLUDE_DIRS} ${MYLIB_LIB_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${HARDLIB_LIB_LIBRARIES} dl ${MYLIB_LIB_LIBRARIES})
 endif()
 
-add_subdirectory(lib2)
+if (V_HOW STREQUAL "Simple_on" OR V_HOW STREQUAL "Complicated_on")
+    set(CMAKE_C_FLAGS "-g")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}  -fsanitize=address,undefined -fno-sanitize-recover=all-fsanitize-undefined-trap-on-error" )    
+elseif (V_HOW STREQUAL "Simple_off" OR V_HOW STREQUAL "Complicated_off")
+    set(CMAKE_C_FLAGS "-Wall -W -Werror -Wpedantic -g -O0 -fprofile-arcs -fPIC -ftest-coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -coverage -lgcov" )
+endif()
 
-set(CMAKE_C_FLAGS "-g -O0 -Wall -W -Werror -Wpedantic -fprofile-arcs -fPIC -ftest-coverage")
-set(CMAKE_EXE_LINKER_FLAGS "-fprofile-arcs -ftest-coverage")
-target_include_directories(${PROJECT_NAME} PUBLIC ${MYLIB_LIB_INCLUDE_DIRS} PUBLIC ${HARDLIB_LIB_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${MYLIB_LIB_LIBRARIES} PRIVATE ${HARDLIB_LIB_LIBRARIES} dl)
 add_subdirectory(tests)
