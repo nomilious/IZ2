@@ -38,7 +38,7 @@ run:
 	./build/a.out
 
 test_time:
-	multitime -q -n 30 ./build/a.out
+	multitime -q -n 30 ./build/a.out 2
 
 test:
 	./build/tests/test

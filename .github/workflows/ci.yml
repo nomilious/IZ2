@@ -23,16 +23,16 @@ jobs:
         run: make clean && make complicated_off && make test_valgrind
 
       - name: build_run2_valgrind
-        run: make clean && make simple_off && make test_valgrind
+        run: make clean && make && make test_valgrind
 
       - name: test_coverage
-        run: make clean && make && make test && make test_coverage
+        run: make test_coverage
 
       - name: test_time1
-        run: make complicated_off && make test_time > tests/files/complicate.txt
+        run: make complicated_time && make test_time 2>> build/report/log.txt
 
       - name: test_time2
-        run: make simple_off && make test_time > tests/files/simple.txt
+        run: make simple_time && make test_time 2>> build/report/log.txt
 
       - name: save artifact
         uses: actions/upload-artifact@v3

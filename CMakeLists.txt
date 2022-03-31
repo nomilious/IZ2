@@ -22,6 +22,7 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE ${HARDLIB_LIB_LIBRARIES} dl ${MYLIB_LIB_LIBRARIES})
 endif()
 
+
 if (V_HOW STREQUAL "Simple_on" OR V_HOW STREQUAL "Complicated_on")
     set(CMAKE_C_FLAGS "-g")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}  -fsanitize=address,undefined -fno-sanitize-recover=all-fsanitize-undefined-trap-on-error" )    
