@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 project(hardlib)
 
-
 if (V_HOW STREQUAL  "Simple_off" OR V_HOW STREQUAL "Complicated_off")
     set(CMAKE_C_FLAGS "-Wall -W -Werror -Wpedantic -O0 -fprofile-arcs -fPIC -ftest-coverage")
 endif()
