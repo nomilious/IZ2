@@ -1,0 +1,47 @@
+on: push
+
+jobs:
+  Build_and_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install env
+        run: sudo apt update && sudo apt install cppcheck clang-tidy  multitime clang-tools python3  python3-pip  make libgtest-dev lcov libc6-dbg valgrind tree && pip install cpplint 
+
+      - name: check
+        run: make check && make format
+
+      - name: build_run1_fsanitizer
+        run: make complicated_on && make test
+
+      - name: build_run2_fsanitizer
+        run: make simple_on && make test
+
+      - name: build_run1_valgrind
+        run: make clean && make complicated_off && make test_valgrind
+
+      - name: build_run2_valgrind
+        run: make clean && make simple_off && make test_valgrind
+
+      - name: test_coverage
+        run: make test && make test_coverage
+
+      - name: test_time1
+        run: make complicated_off && make test_time > tests/files/complicate.txt
+
+      - name: test_time2
+        run: make simple_off && make test_time > tests/files/simple.txt
+
+      - name: save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: build/report/
+
+      - name: save time artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: time_report
+          path: tests/files/

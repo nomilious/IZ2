@@ -53,7 +53,7 @@ test_coverage: test
 	lcov -b build -t "tests/test" -o coverage.info -c -d lib2/ -d lib1/ && genhtml -o build/report coverage.info
 
 test_valgrind:
-	sudo valgrind --tool=memcheck --leak-check=yes ./build/tests/test 
+	sudo valgrind --tool=memcheck --leak-check=yes ./build/a.out 
 
 clean:
 	rm -r build
