@@ -14,10 +14,10 @@ jobs:
         run: make check && make format
 
       - name: build_run1_fsanitizer
-        run: make complicated_on && make test
+        run: make complicated_on && make run
 
       - name: build_run2_fsanitizer
-        run: make simple_on && make test
+        run: make simple_on && make run
 
       - name: build_run2_valgrind
         run: make clean && make && make test_valgrind
