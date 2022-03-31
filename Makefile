@@ -35,10 +35,10 @@ builder:
 	cmake --build build
 
 run:
-	./build/a.out
+	./build/a.out < in.txt
 
 test_time:
-	multitime -q -n 30 ./build/a.out 2
+	multitime -q -n 10 ./build/a.out < in.txt 2>> build/report/log.txt
 
 test:
 	./build/tests/test
@@ -49,11 +49,11 @@ check:
 format:
 	clang-format -i lib1/*.c lib2/*.c mains/*.c tests/*.cpp
 
-test_coverage: test
-	lcov -b build -t "tests/test" -o coverage.info -c -d lib2/ -d lib1/ && genhtml -o build/report coverage.info
+test_coverage: 
+	cd build && lcov -t "tests/test" -o coverage.info -c -d lib2/ -d lib1/ && genhtml -o report coverage.info
 
 test_valgrind:
-	sudo valgrind --tool=memcheck --leak-check=yes ./build/a.out 
+	sudo valgrind --tool=memcheck --leak-check=yes ./build/tests/test
 
 clean:
 	rm -r build

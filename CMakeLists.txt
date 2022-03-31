@@ -18,8 +18,8 @@ if (V_HOW STREQUAL "Simple_off" OR V_HOW STREQUAL  "Simple_on" OR V_HOW STREQUAL
     target_link_libraries(${PROJECT_NAME} PRIVATE ${MYLIB_LIB_LIBRARIES})
 else()
     add_executable(${PROJECT_NAME} mains/main2.c)
-    target_include_directories(${PROJECT_NAME} PUBLIC ${HARDLIB_LIB_INCLUDE_DIRS} ${MYLIB_LIB_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${HARDLIB_LIB_LIBRARIES} dl ${MYLIB_LIB_LIBRARIES})
+    target_include_directories(${PROJECT_NAME} PUBLIC ${HARDLIB_LIB_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${HARDLIB_LIB_LIBRARIES} dl)
 endif()
 
 

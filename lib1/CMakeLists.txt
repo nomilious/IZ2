@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 project(mylib)
 
 if (V_HOW STREQUAL  "Simple_off" OR V_HOW STREQUAL "Complicated_off")
-    set(CMAKE_C_FLAGS "-O0 -Wall -W -Werror -Wpedantic -fprofile-arcs -fPIC -ftest-coverage")
+    set(CMAKE_C_FLAGS "-Wall -W -Werror -Wpedantic -g -O0 -fprofile-arcs -fPIC -ftest-coverage")
 endif()
 
 file(GLOB SOURCES *.c)

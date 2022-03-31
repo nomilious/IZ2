@@ -19,9 +19,6 @@ jobs:
       - name: build_run2_fsanitizer
         run: make simple_on && make test
 
-      - name: build_run1_valgrind
-        run: make clean && make complicated_off && make test_valgrind
-
       - name: build_run2_valgrind
         run: make clean && make && make test_valgrind
 
@@ -39,9 +36,3 @@ jobs:
         with:
           name: report
           path: build/report/
-
-      - name: save time artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: time_report
-          path: tests/files/
