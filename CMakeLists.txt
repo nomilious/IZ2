@@ -11,7 +11,7 @@ set(CMAKE_C_STANDARD 99)
 
 add_subdirectory(lib1)
 add_subdirectory(lib2)
-if (V_HOW STREQUAL "Simple_off" OR V_HOW STREQUAL "Simple_on" OR V_HOW STREQUAL "Simple_time")
+if (V_HOW STREQUAL "Simple_off" OR V_HOW STREQUAL  "Simple_on" OR V_HOW STREQUAL  "Simple_time")
     add_executable(${PROJECT_NAME} mains/main1.c)  
     target_include_directories(${PROJECT_NAME} PUBLIC ${MYLIB_LIB_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} PRIVATE ${MYLIB_LIB_LIBRARIES})

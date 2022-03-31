@@ -25,7 +25,7 @@ int main() {
 
     void *library = dlopen("libhardlib.so", RTLD_LAZY);
     if (!library) {
-        printf("ERROR 1\n");
+        printf("ERROR no hardlib\n");
         return 1;
     }
 
