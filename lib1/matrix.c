@@ -23,8 +23,8 @@ inline int *insert_arr(const int row, const int col, const int max_n) {
     }
     return arr;
 }
-void output(const int *arr, const int row, const int col) {
-    for (int i = 0; i < row * col; ++i) {
-        printf("%d", i);
-    }
-}
+// void output(const int *arr, const int row, const int col) {
+//     for (int i = 0; i < row * col; ++i) {
+//         printf("%d", i);
+//     }
+// }

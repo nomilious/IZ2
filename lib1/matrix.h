@@ -8,5 +8,5 @@
 
 int *solve(const int *, const int, const int);
 int *insert_arr(const int, const int, const int);
-void output(const int *, const int, const int);
+// void output(const int *, const int, const int);
 #endif
