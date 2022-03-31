@@ -26,6 +26,8 @@ inline int *solve_hard(const int *array, const int row, const int col) {
             exit(0);
         }
     }
+    for (int i = 0; i < max_proc; ++i)
+        wait(NULL);
     int *res = malloc(sizeof(int) * col * row);
     memcpy(res, new_arr, col * row * sizeof(int));
     munmap(shared_i, sizeof(int));
