@@ -26,7 +26,7 @@ jobs:
         run: make clean && make simple_off && make test_valgrind
 
       - name: test_coverage
-        run: make test && make test_coverage
+        run: make clean && make && make test && make test_coverage
 
       - name: test_time1
         run: make complicated_off && make test_time > tests/files/complicate.txt
