@@ -17,7 +17,7 @@ inline int *solve_hard(const int *array, const int row, const int col) {
         if (!pid) {
             while (++(*shared_i) < col) {
                 for (int j = 0; j < row; ++j)
-                    new_arr[(*shared_i) * row + j] = array[(row - 1 - j) * col + col - 1 - (*shared_i)];
+                    new_arr[(*shared_i) * row + j] = array[(row - j) * col - 1 - (*shared_i)];
             }
             exit(0);
         } else if (pid == -1) {
@@ -25,10 +25,21 @@ inline int *solve_hard(const int *array, const int row, const int col) {
             exit(0);
         }
     }
-    for (int i = 0; i < max_proc; ++i)
-        wait(NULL);
+    int status, n = 0, m;
     int *res = malloc(sizeof(int) * col * row);
-    memcpy(res, new_arr, col * row * sizeof(int));
+    for (int i = 0; i < max_proc;) {
+        m = (*shared_i - max_proc) * row;
+        if (m > n) {
+            memcpy(&res[n], &new_arr[n], m * sizeof(int));
+            n = m;
+        }
+        waitpid(-1, &status, WNOHANG);
+        if (status == 0) {
+            ++i;
+            status = 0;
+        }
+    }
+    memcpy(&res[n], &new_arr[n], (col * row - m) * sizeof(int));
     munmap(shared_i, sizeof(int));
     munmap(new_arr, col * row);
     return res;
