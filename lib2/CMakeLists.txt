@@ -5,7 +5,6 @@ if (V_HOW STREQUAL  "Simple_off" OR V_HOW STREQUAL "Complicated_off")
     set(CMAKE_C_FLAGS "-Wall -W -Werror -Wpedantic -O0 -fprofile-arcs -fPIC -ftest-coverage")
 endif()
 
-
 file(GLOB SOURCES *.c)
 file(GLOB INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR})
 
