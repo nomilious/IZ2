@@ -2,12 +2,10 @@
 
 inline int *solve_hard(const int *array, const int row, const int col) {
     int max_proc = sysconf(_SC_NPROCESSORS_ONLN);
-    int *shared_i = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE,
-                         MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int *shared_i = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (shared_i == MAP_FAILED)
         return NULL;
-    int *new_arr = mmap(NULL, row * col * sizeof(int), PROT_WRITE,
-                        MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int *new_arr = mmap(NULL, row * col * sizeof(int), PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (new_arr == MAP_FAILED) {
         munmap(shared_i, sizeof(int));
         return NULL;
@@ -29,18 +27,18 @@ inline int *solve_hard(const int *array, const int row, const int col) {
             exit(0);
         }
     }
-    int n = 0;
-    int m = (*shared_i - max_proc) * row;
+    int inputted = 0;
     int *res = malloc(sizeof(int) * col * row);
-    for (int i = 0; i < max_proc; ++i) {
-        if (m > n) {
-            memcpy(&res[n], &new_arr[n], (m - n + 1) * sizeof(int));
-            n = m + 1;
+    while (*shared_i < col) {
+        int stat;
+        int m = (*shared_i - max_proc) * row;  // - max_proc, т.к эти строки мож\гут быть в разработке, т.е над ними еще процесы будут работать
+        if (m > inputted) {
+            memcpy(&res[inputted], &new_arr[inputted], (m - inputted + 1) * sizeof(int));
+            inputted = m + 1;
         }
-        wait(NULL);
-        m = (*shared_i - max_proc) * row;
+        waitpid(-1, &stat, WNOHANG);
     }
-    memcpy(&res[n], &new_arr[n], (row * col - n) * sizeof(int));
+    memcpy(&res[inputted], &new_arr[inputted], (row * col - inputted) * sizeof(int));
     munmap(shared_i, sizeof(int));
     munmap(new_arr, col * row);
     return res;

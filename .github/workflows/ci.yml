@@ -14,22 +14,22 @@ jobs:
         run: make check && make format
 
       - name: build_run1_fsanitizer
-        run: make complicated_on && make run
-
-      - name: build_run2_fsanitizer
         run: make simple_on && make run
 
-      - name: build_run2_valgrind
+      - name: build_run2_fsanitizer
+        run: make complicated_on && make run
+
+      - name: build_run1_valgrind
         run: make clean && make && make test_valgrind
 
       - name: test_coverage
         run: make test_coverage
 
       - name: test_time1
-        run: make complicated_time && make test_time 2>> build/report/log.txt
-
+        run: make simple_time && echo "Simple run" >> build/report/log.txt && make test_time 2>> build/report/log.txt
+        
       - name: test_time2
-        run: make simple_time && make test_time 2>> build/report/log.txt
+        run:  make complicated_time && echo "Parallel run" >> build/report/log.txt && make test_time 2>> build/report/log.txt
 
       - name: save artifact
         uses: actions/upload-artifact@v3

@@ -34,6 +34,7 @@ pre_build_complicated_time:
 builder:
 	cmake --build build
 
+
 run:
 	./build/a.out < in.txt
 

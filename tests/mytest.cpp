@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 #include <malloc.h>
 extern "C" {
-#include "../lib1/matrix.h"
-#include "../lib2/parallel_matrix.h"
+#include "matrix.h"
+#include "parallel_matrix.h"
 }
 inline int *create_arr(const int row, const int col, int max_n) {
     int *arr = (int *) malloc(row * col * sizeof(int));
