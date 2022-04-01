@@ -3,5 +3,5 @@
 #include <malloc.h>
 #include <stdio.h>
 
-int *solve(const int *, const int, const int);
+int *solve(const int *, const size_t, const size_t);
 #endif

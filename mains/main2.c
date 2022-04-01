@@ -1,7 +1,5 @@
 #include <dlfcn.h>
 #include <malloc.h>
-#include <stdlib.h>
-#include <time.h>
 
 #include "header.h"
 #include "parallel_matrix.h"

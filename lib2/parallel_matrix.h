@@ -7,5 +7,5 @@
 #include <unistd.h>
 #define HEADER_PARALLEL
 
-int *solve_hard(const int *, const int, const int);
+int *solve_hard(const int *, const size_t, const size_t);
 #endif
