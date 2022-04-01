@@ -3,28 +3,15 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "header.h"
 #include "parallel_matrix.h"
 
-#define ROWS 10000
-#define COLS 5000
-int *insert_arr(const int row, const int col) {
-    int *arr = (int *) malloc(row * col * sizeof(int));
-    if (!arr)
-        return NULL;
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++)
-            if (!scanf("%d", &arr[i * col + j]))
-                return NULL;
-    }
-    return arr;
-}
-
-int main() {
-    int *(*myfunc)(int *, int, int) = NULL;
+int main(int argc, char **argv) {
     int *arr = NULL;
+    int *(*myfunc)(int *, int, int) = NULL;
 
-    void *library = dlopen("build/lib2/libhardlib.so", RTLD_LAZY);  // dlopen("libhardlib.so",...) - fails, Idk why.
-    // Earlier it was so and it didn't failed in github CI!
+    void *library = dlopen("libhardlib.so", RTLD_LAZY);
+    // !build/lib2/
     if (!library) {
         printf("ERROR no hardlib\n");
         return 1;
@@ -36,7 +23,14 @@ int main() {
         printf("ERROR not find func\n");
         return 1;
     }
-    arr = insert_arr(ROWS, COLS);
+
+    if (argc > 1) {
+        printf("Dвод из файла\n");
+        arr = insert_from_file(argv[1], ROWS, COLS);
+    } else {
+        printf("Dвод c клавы\n");
+        arr = insert_arr(ROWS, COLS);
+    }
 
     if (!arr) {
         dlclose(library);

@@ -36,7 +36,7 @@ builder:
 
 
 run:
-	./build/a.out < in.txt
+	./build/a.out $(ARGS)
 
 check:
 	bash linters/run.sh
@@ -51,7 +51,7 @@ test:
 	./build/tests/test
 
 test_valgrind:
-	sudo valgrind --tool=memcheck --leak-check=yes ./build/a.out < in.txt
+	sudo valgrind --tool=memcheck --leak-check=yes ./build/a.out in.txt
 
 test_coverage: test
 	cd build && lcov -t "tests/test" -o coverage.info -c -d lib2/ -d lib1/ && genhtml -o report coverage.info

@@ -11,13 +11,13 @@ jobs:
         run: sudo apt update && sudo apt install cppcheck clang-tidy  multitime clang-tools python3  python3-pip  make libgtest-dev lcov libc6-dbg valgrind tree && pip install cpplint 
 
       - name: check
-        run: make check && make format
+        run: make format && make check
 
       - name: build_run1_fsanitizer
-        run: make simple_on && make run
+        run: make simple_on && make run ARGS='in.txt'
 
       - name: build_run2_fsanitizer
-        run: make complicated_on && echo build && make run
+        run: make complicated_on && echo build && make run ARGS='in.txt'
 
       - name: build_run1_valgrind
         run: make clean && make && make test_valgrind
