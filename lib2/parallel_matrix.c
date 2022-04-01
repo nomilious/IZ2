@@ -2,8 +2,8 @@
 
 int *solve_hard(const int *array, const size_t row, const size_t col) {
     int num_proc = sysconf(_SC_NPROCESSORS_ONLN);
-    size_t *arr_col = mmap(NULL, sizeof(size_t), PROT_READ | PROT_WRITE,
-                           MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    int *arr_col = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE,
+                        MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     if (arr_col == MAP_FAILED)
         return NULL;
     int *res = malloc(sizeof(int) * col * row);
@@ -18,13 +18,13 @@ int *solve_hard(const int *array, const size_t row, const size_t col) {
         munmap(arr_col, sizeof(int));
         return NULL;
     }
-    *arr_col = 0;
+    *arr_col = -1;
     // создаем num_proc дочерних элементов либо выходим, т.к матрица обработана
-    for (size_t k = 0; (int) k < num_proc && *arr_col < col; ++k) {
+    for (size_t k = 0; (int) k < num_proc && *arr_col < (int) col; ++k) {
         int pid = fork();
         if (!pid) {
             // rкаждый последующий процесс рассматривает разные столбцы матрицы
-            size_t nr = (*arr_col)++;
+            size_t nr = ++(*arr_col);
             while (nr < col) {
                 for (size_t j = 0; j < row; ++j)
                     new_arr[nr * row + j] = array[(row - j) * col - 1 - nr];
@@ -37,12 +37,12 @@ int *solve_hard(const int *array, const size_t row, const size_t col) {
         }
     }
     // дожидаемя дочерних процессов
-    while (*arr_col < col)
+    while (*arr_col < (int) col)
         wait(NULL);
     // копируем из расшаренной памяти в массив и его возвращаем
     memcpy(res, new_arr, (row * col) * sizeof(int));
 
-    munmap(arr_col, sizeof(size_t));
+    munmap(arr_col, sizeof(int));
     munmap(new_arr, row * col * sizeof(int));
 
     return res;
