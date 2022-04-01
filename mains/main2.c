@@ -8,51 +8,51 @@
 #define ROWS 10000
 #define COLS 5000
 int *insert_arr(const int row, const int col) {
-    int *arr = (int *) malloc(row * col * sizeof(int));
-    if (!arr)
+  int *arr = (int *)malloc(row * col * sizeof(int));
+  if (!arr)
+    return NULL;
+  for (int i = 0; i < row; i++) {
+    for (int j = 0; j < col; j++)
+      if (!scanf("%d", &arr[i * col + j]))
         return NULL;
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++)
-            if (!scanf("%d", &arr[i * col + j]))
-                return NULL;
-    }
-    return arr;
+  }
+  return arr;
 }
 
 int main() {
-    int *(*myfunc)(int *, int, int) = NULL;
-    int *arr = NULL;
+  int *(*myfunc)(int *, int, int) = NULL;
+  int *arr = NULL;
 
-    void *library = dlopen("libhardlib.so", RTLD_LAZY);
-    if (!library) {
-        printf("ERROR no hardlib\n");
-        return 1;
-    }
+  void *library = dlopen("libhardlib.so", RTLD_LAZY);
+  if (!library) {
+    printf("ERROR no hardlib\n");
+    return 1;
+  }
 
-    *(void **) (&myfunc) = dlsym(library, "solve_hard");
-    if (!myfunc) {
-        dlclose(library);
-        printf("ERROR not find func\n");
-        return 1;
-    }
-    arr = insert_arr(ROWS, COLS);
-
-    if (!arr) {
-        dlclose(library);
-        printf("ERROR array\n");
-        return 1;
-    }
-
-    int *result = myfunc(arr, ROWS, COLS);
-    if (!result) {
-        dlclose(library);
-        free(arr);
-        printf("ERROR in func\n");
-        return 1;
-    }
-    free(arr);
-    free(result);
+  *(void **)(&myfunc) = dlsym(library, "solve_hard");
+  if (!myfunc) {
     dlclose(library);
+    printf("ERROR not find func\n");
+    return 1;
+  }
+  arr = insert_arr(ROWS, COLS);
 
-    return 0;
+  if (!arr) {
+    dlclose(library);
+    printf("ERROR array\n");
+    return 1;
+  }
+
+  int *result = myfunc(arr, ROWS, COLS);
+  if (!result) {
+    dlclose(library);
+    free(arr);
+    printf("ERROR in func\n");
+    return 1;
+  }
+  free(arr);
+  free(result);
+  dlclose(library);
+
+  return 0;
 }
