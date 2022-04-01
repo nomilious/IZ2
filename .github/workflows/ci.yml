@@ -17,7 +17,7 @@ jobs:
         run: make simple_on && make run
 
       - name: build_run2_fsanitizer
-        run: make complicated_on && make run
+        run: make complicated_on && echo build && make run
 
       - name: build_run1_valgrind
         run: make clean && make && make test_valgrind
