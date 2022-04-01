@@ -1,0 +1,38 @@
+on: push
+
+jobs:
+  Build_and_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: install env
+        run: sudo apt update && sudo apt install cppcheck clang-tidy  multitime clang-tools python3  python3-pip  make libgtest-dev lcov libc6-dbg valgrind tree && pip install cpplint 
+
+      - name: check
+        run: make format && make check
+
+      - name: build_run1_fsanitizer
+        run: make simple_on && make run ARGS='in.txt'
+
+      - name: build_run2_fsanitizer
+        run: make complicated_on && echo build && make run ARGS='in.txt'
+
+      - name: build_run1_valgrind
+        run: make clean && make && make test_valgrind
+
+      - name: test_coverage
+        run: make test_coverage
+
+      - name: test_time1
+        run: make simple_time && echo "Simple run" >> build/report/log.txt && make test_time 2>> build/report/log.txt
+        
+      - name: test_time2
+        run:  make complicated_time && echo "Parallel run" >> build/report/log.txt && make test_time 2>> build/report/log.txt
+
+      - name: save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: build/report/

@@ -1,0 +1,7 @@
+.vscode/*
+a.out
+build/*
+exec
+log*
+*log
+coverage.info
