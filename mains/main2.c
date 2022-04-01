@@ -10,8 +10,7 @@ int main(int argc, char **argv) {
     int *arr = NULL;
     int *(*myfunc)(int *, int, int) = NULL;
 
-    void *library = dlopen("libhardlib.so", RTLD_LAZY);
-    // !build/lib2/
+    void *library = dlopen("build/lib2/libhardlib.so", RTLD_LAZY);  // dlopen("libhardlib.so",...) - fails, Idk why.
     if (!library) {
         printf("ERROR no hardlib\n");
         return 1;
